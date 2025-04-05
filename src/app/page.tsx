@@ -2,64 +2,73 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main>
       {/* Navigation Bar */}
-      <nav className="bg-white shadow-md fixed w-full z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <span className="text-2xl font-bold text-blue-600">PropertyPro</span>
-            </div>
-            <div className="hidden md:flex items-center space-x-8">
-              <a href="#features" className="text-gray-600 hover:text-blue-600">Features</a>
-              <a href="#properties" className="text-gray-600 hover:text-blue-600">Properties</a>
-              <a href="#contact" className="text-gray-600 hover:text-blue-600">Contact</a>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-                Get Started
-              </button>
-            </div>
+      <nav className="nav">
+        <div className="nav-container">
+          <span className="nav-brand">Minuet</span>
+          <div className="nav-links">
+            <a href="#features" className="nav-link">Features</a>
+            <a href="#properties" className="nav-link">Properties</a>
+            <a href="#contact" className="nav-link">Contact</a>
+            <button className="button button-primary">Get Started</button>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-20 bg-gradient-to-r from-blue-50 to-blue-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <section className="hero">
+        <div className="hero-container">
+          <div className="hero-grid">
             <div>
-              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+              <h1 className="hero-title">
                 Modern Property Management Made Simple
               </h1>
-              <p className="text-xl text-gray-600 mb-8">
+              <p className="hero-text">
                 Streamline your property management with our comprehensive solution. From tenant screening to maintenance requests, we've got you covered.
               </p>
-              <div className="space-x-4">
-                <button className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg hover:bg-blue-700">
-                  Get Started
-                </button>
-                <button className="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-md text-lg hover:bg-blue-50">
-                  Learn More
-                </button>
+              <div className="hero-buttons">
+                <button className="button button-primary">Get Started</button>
+                <button className="button button-outline">Learn More</button>
               </div>
             </div>
-            <div className="relative h-[400px]">
-              <Image
-                src="/hero-building.jpg"
-                alt="Modern apartment building"
-                fill
-                className="object-cover rounded-lg shadow-xl"
-                priority
-              />
+            <div className="hero-image flex flex-col items-center justify-center text-center px-4">
+              <div 
+                style={{
+                  background: `linear-gradient(135deg, 
+                    rgba(0, 229, 187, 0.2),
+                    rgba(41, 166, 143, 0.15),
+                    rgba(230, 63, 0, 0.05)
+                  )`,
+                  padding: '2.5rem',
+                  borderRadius: '24px',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(0, 229, 187, 0.2)',
+                  boxShadow: '0 8px 32px rgba(0, 229, 187, 0.1)'
+                }}
+                className="mb-8 relative overflow-hidden"
+              >
+                <span style={{ fontSize: '6rem', position: 'relative', zIndex: 2 }}>🏢</span>
+                <span style={{ fontSize: '4.5rem', opacity: 0.85, position: 'relative', top: '10px', left: '10px', zIndex: 1 }}>🏠</span>
+                <span style={{ fontSize: '5rem', opacity: 0.9, position: 'relative', top: '-5px', left: '-15px', zIndex: 3 }}>🌆</span>
+              </div>
+              <h1 className="text-5xl md:text-6xl font-bold mb-6" style={{
+                background: `linear-gradient(135deg, #00E5BB, #29A68F)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}>
+                Welcome to Minuet
+              </h1>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Why Choose Us</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section id="features" className="features">
+        <div className="features-container">
+          <h2 className="features-title">Why Choose Us</h2>
+          <div className="features-grid">
             {[
               {
                 title: "Easy Management",
@@ -77,10 +86,10 @@ export default function Home() {
                 icon: "🌟"
               }
             ].map((feature, index) => (
-              <div key={index} className="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
+              <div key={index} className="feature-card">
+                <div className="feature-icon">{feature.icon}</div>
+                <h3 className="feature-title">{feature.title}</h3>
+                <p className="feature-text">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -88,81 +97,75 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Get in Touch</h2>
-          <div className="max-w-2xl mx-auto">
-            <form className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
-                <textarea
-                  id="message"
-                  rows={4}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                ></textarea>
-              </div>
-              <div>
-                <button type="submit" className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-                  Send Message
-                </button>
-              </div>
-            </form>
-          </div>
+      <section id="contact" className="contact">
+        <div className="contact-container">
+          <h2 className="contact-title">Get in Touch</h2>
+          <form className="contact-form">
+            <div className="form-group">
+              <label htmlFor="name" className="form-label">Name</label>
+              <input
+                type="text"
+                id="name"
+                className="form-input"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">Email</label>
+              <input
+                type="email"
+                id="email"
+                className="form-input"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="message" className="form-label">Message</label>
+              <textarea
+                id="message"
+                rows={4}
+                className="form-input"
+              ></textarea>
+            </div>
+            <button type="submit" className="button button-primary">Send Message</button>
+          </form>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <footer className="footer">
+        <div className="footer-container">
+          <div className="footer-grid">
             <div>
-              <h3 className="text-2xl font-bold mb-4">PropertyPro</h3>
-              <p className="text-gray-400">Modern property management solutions for modern property owners.</p>
+              <h3 className="footer-brand">Minuet</h3>
+              <p className="footer-text">Modern property management solutions for modern property owners.</p>
             </div>
             <div>
-              <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2">
-                <li><a href="#features" className="text-gray-400 hover:text-white">Features</a></li>
-                <li><a href="#properties" className="text-gray-400 hover:text-white">Properties</a></li>
-                <li><a href="#contact" className="text-gray-400 hover:text-white">Contact</a></li>
+              <h4 className="footer-title">Quick Links</h4>
+              <ul className="footer-links">
+                <li><a href="#features" className="footer-link">Features</a></li>
+                <li><a href="#properties" className="footer-link">Properties</a></li>
+                <li><a href="#contact" className="footer-link">Contact</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-lg font-semibold mb-4">Contact</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>123 Property Street</li>
-                <li>Real Estate City, RE 12345</li>
-                <li>contact@propertypro.com</li>
-                <li>(555) 123-4567</li>
+              <h4 className="footer-title">Contact</h4>
+              <ul className="footer-links">
+                <li className="footer-text">123 Property Street</li>
+                <li className="footer-text">Real Estate City, RE 12345</li>
+                <li className="footer-text">contact@propertypro.com</li>
+                <li className="footer-text">(555) 123-4567</li>
               </ul>
             </div>
             <div>
-              <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
-              <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-white">Twitter</a>
-                <a href="#" className="text-gray-400 hover:text-white">LinkedIn</a>
-                <a href="#" className="text-gray-400 hover:text-white">Facebook</a>
+              <h4 className="footer-title">Follow Us</h4>
+              <div className="footer-links">
+                <a href="#" className="footer-link">Twitter</a>
+                <a href="#" className="footer-link">LinkedIn</a>
+                <a href="#" className="footer-link">Facebook</a>
               </div>
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
-            <p>&copy; 2024 PropertyPro. All rights reserved.</p>
+          <div className="footer-bottom">
+            <p>&copy; 2024 Minuet. All rights reserved.</p>
           </div>
         </div>
       </footer>
