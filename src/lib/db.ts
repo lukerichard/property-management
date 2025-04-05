@@ -1,10 +1,12 @@
 import mongoose from 'mongoose';
 
+type CachedConnection = {
+  conn: mongoose.Mongoose | null;
+  promise: Promise<mongoose.Mongoose> | null;
+};
+
 declare global {
-  var mongoose: {
-    conn: typeof mongoose | null;
-    promise: Promise<typeof mongoose> | null;
-  };
+  var mongoose: CachedConnection;
 }
 
 if (!process.env.MONGODB_URI) {
@@ -13,35 +15,32 @@ if (!process.env.MONGODB_URI) {
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-let cached = global.mongoose;
-
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+// Initialize the cached connection if it doesn't exist
+if (!global.mongoose) {
+  global.mongoose = { conn: null, promise: null };
 }
 
-async function connectDB() {
-  if (cached.conn) {
-    return cached.conn;
+async function connectDB(): Promise<mongoose.Mongoose> {
+  if (global.mongoose.conn) {
+    return global.mongoose.conn;
   }
 
-  if (!cached.promise) {
-    const opts = {
+  if (!global.mongoose.promise) {
+    const opts: mongoose.ConnectOptions = {
       bufferCommands: true,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      return mongoose;
-    });
+    global.mongoose.promise = mongoose.connect(MONGODB_URI, opts);
   }
 
   try {
-    cached.conn = await cached.promise;
+    global.mongoose.conn = await global.mongoose.promise;
   } catch (e) {
-    cached.promise = null;
+    global.mongoose.promise = null;
     throw e;
   }
 
-  return cached.conn;
+  return global.mongoose.conn;
 }
 
 export default connectDB; 
