@@ -9,9 +9,8 @@ export default function Home() {
           <span className="nav-brand">Minuet</span>
           <div className="nav-links">
             <a href="#features" className="nav-link">Features</a>
-            <a href="#properties" className="nav-link">Properties</a>
             <a href="#contact" className="nav-link">Contact</a>
-            <button className="button button-primary">Get Started</button>
+            <a href="/login" className="button">Login</a>
           </div>
         </div>
       </nav>
@@ -32,7 +31,7 @@ export default function Home() {
                 <button className="button button-outline">Learn More</button>
               </div>
             </div>
-            <div className="hero-image flex flex-col items-center justify-center text-center px-4">
+            <div className="hero-image">
               <div 
                 style={{
                   background: `linear-gradient(135deg, 
@@ -46,13 +45,15 @@ export default function Home() {
                   border: '1px solid rgba(0, 229, 187, 0.2)',
                   boxShadow: '0 8px 32px rgba(0, 229, 187, 0.1)'
                 }}
-                className="mb-8 relative overflow-hidden"
               >
                 <span style={{ fontSize: '6rem', position: 'relative', zIndex: 2 }}>🏢</span>
                 <span style={{ fontSize: '4.5rem', opacity: 0.85, position: 'relative', top: '10px', left: '10px', zIndex: 1 }}>🏠</span>
                 <span style={{ fontSize: '5rem', opacity: 0.9, position: 'relative', top: '-5px', left: '-15px', zIndex: 3 }}>🌆</span>
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold mb-6" style={{
+              <h1 style={{
+                fontSize: '3rem',
+                fontWeight: 'bold',
+                marginBottom: '1.5rem',
                 background: `linear-gradient(135deg, #00E5BB, #29A68F)`,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent'
