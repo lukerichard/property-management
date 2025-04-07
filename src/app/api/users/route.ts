@@ -8,6 +8,7 @@ export async function GET() {
     const users = await User.find({}).select('-password');
     return NextResponse.json({ users });
   } catch (error) {
+    console.error('Error fetching users:', error);
     return NextResponse.json(
       { error: 'Internal Server Error' },
       { status: 500 }

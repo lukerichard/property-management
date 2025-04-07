@@ -1,40 +1,39 @@
+'use client';
+
 import Link from 'next/link';
 
 export default function LoginPage() {
   return (
     <div className="login-container">
-      <div className="admin-link">
-        <Link href="/login/admin">
-          Admin Login
-        </Link>
-      </div>
-
-      <div className="login-card">
-        <h1 className="login-title">
-          Choose Your Role
-        </h1>
+      <div className="login-box">
+        <div className="login-header">
+          <h2 className="login-title">
+            Welcome to Minuet
+          </h2>
+          <p className="login-subtitle">
+            Choose your role to get started
+          </p>
+        </div>
 
         <div className="role-grid">
           <Link href="/login/landlord" className="role-card">
             <div className="role-content">
               <div className="role-icon">🏘️</div>
-              <h2>Landlord</h2>
+              <h3>I'm a Landlord</h3>
               <p>
-                Manage your properties, tenants, and rental agreements in one place
+                Manage your properties, handle tenant applications, and streamline your rental business
               </p>
             </div>
-            <div className="role-indicator"></div>
           </Link>
 
           <Link href="/login/tenant" className="role-card">
             <div className="role-content">
               <div className="role-icon">🏠</div>
-              <h2>Tenant</h2>
+              <h3>I'm a Tenant</h3>
               <p>
-                Access your rental information, make payments, and submit maintenance requests
+                Find your perfect home, manage your lease, and handle maintenance requests
               </p>
             </div>
-            <div className="role-indicator"></div>
           </Link>
         </div>
 

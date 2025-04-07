@@ -9,33 +9,78 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
+  isVerified: boolean;
+  verificationToken: string;
+  verificationTokenExpiry: Date;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  profilePicture: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+  };
 }
 
-const userSchema = new mongoose.Schema<IUser>({
+const userSchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
-    required: [true, 'Please provide an email'],
+    required: true,
     unique: true,
-    lowercase: true,
-    trim: true,
   },
   password: {
     type: String,
-    required: [true, 'Please provide a password'],
-    minlength: [8, 'Password must be at least 8 characters long'],
-  },
-  name: {
-    type: String,
-    required: [true, 'Please provide a name'],
-    trim: true,
+    required: true,
   },
   role: {
     type: String,
-    enum: ['tenant', 'landlord', 'admin'],
-    default: 'tenant',
+    enum: ['landlord', 'tenant'],
+    required: true,
   },
-}, {
-  timestamps: true,
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+  phoneNumber: {
+    type: String,
+    required: true,
+  },
+  profilePicture: {
+    type: String,
+    default: '',
+  },
+  address: {
+    street: String,
+    city: String,
+    state: String,
+    zipCode: String,
+    country: String,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
+  verificationToken: {
+    type: String,
+  },
+  verificationTokenExpiry: {
+    type: Date,
+  },
 });
 
 // Hash password before saving
@@ -45,7 +90,7 @@ userSchema.pre('save', async function(next) {
   }
 
   try {
-    const salt = await bcrypt.genSalt(12);
+    const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     next();
   } catch (error: any) {
@@ -53,15 +98,40 @@ userSchema.pre('save', async function(next) {
   }
 });
 
+// Update the updatedAt timestamp on save
+userSchema.pre('save', function(next) {
+  this.updatedAt = new Date();
+  next();
+});
+
 // Method to compare password for login
 userSchema.methods.comparePassword = async function(candidatePassword: string): Promise<boolean> {
   try {
-    return await bcrypt.compare(candidatePassword, this.password);
+    console.log('Comparing passwords...');
+    const result = await bcrypt.compare(candidatePassword, this.password);
+    console.log('Password comparison result:', result);
+    return result;
   } catch (error) {
+    console.error('Error comparing passwords:', error);
     return false;
   }
 };
 
-const User = mongoose.models.User || mongoose.model<IUser>('User', userSchema);
+// Create compound index for email and role
+userSchema.index({ email: 1, role: 1 }, { unique: true });
+
+// Add type definitions
+declare global {
+  namespace NodeJS {
+    interface Global {
+      mongoose: {
+        conn: typeof mongoose | null;
+        promise: Promise<typeof mongoose> | null;
+      };
+    }
+  }
+}
+
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 export default User; 
