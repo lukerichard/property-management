@@ -4,6 +4,11 @@
 
 [build.environment]
   NEXT_PUBLIC_BASE_URL = "https://your-site-name.netlify.app"
+  NODE_VERSION = "18"
+  NPM_VERSION = "10"
 
 [[plugins]]
-  package = "@netlify/plugin-nextjs" 
+  package = "@netlify/plugin-nextjs"
+
+[functions]
+  included_files = ["node_modules/**/*"] 
