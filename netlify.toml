@@ -1,14 +1,38 @@
 [build]
   command = "npm install && npm run build"
   publish = ".next"
+  functions = "netlify/functions"
+
+[functions]
+  included_files = [
+    "src/**/*",
+    "public/**/*",
+    "package.json",
+    "package-lock.json",
+    ".env.production"
+  ]
 
 [build.environment]
   NEXT_PUBLIC_BASE_URL = "https://your-site-name.netlify.app"
   NODE_VERSION = "18"
-  NPM_VERSION = "10"
+  NPM_VERSION = "9"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-[functions]
-  included_files = ["node_modules/**/*"] 
+[[redirects]]
+  from = "/_next/image"
+  query = { url = ":url", w = ":width", q = ":quality" }
+  status = 200
+  to = "/.netlify/images?url=:url&w=:width&q=:quality"
+
+[[redirects]]
+  from = "/_ipx/*"
+  query = { url = ":url", w = ":width", q = ":quality" }
+  status = 200
+  to = "/.netlify/images?url=:url&w=:width&q=:quality"
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable" 
