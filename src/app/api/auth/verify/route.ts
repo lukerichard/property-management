@@ -33,8 +33,18 @@ export async function GET() {
     // Remove password from response
     const { password: _, ...userWithoutPassword } = user.toObject();
 
+    const response = await fetch('/api/auth/verify', {
+      credentials: 'include' // Important for cookies to work
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to verify user');
+    }
+
+    const data = await response.json();
     return NextResponse.json({
-      user: userWithoutPassword
+      user: userWithoutPassword,
+      verification: data
     });
   } catch (error) {
     console.error('Verification error:', error);

@@ -33,6 +33,7 @@ export default function TenantLogin() {
           ...formData,
           role: 'tenant'
         }),
+        credentials: 'include'
       });
 
       const data = await response.json();

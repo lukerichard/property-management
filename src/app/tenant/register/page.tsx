@@ -76,6 +76,7 @@ export default function TenantRegister() {
           address: formData.address,
           role: 'tenant' as const
         }),
+        credentials: 'include'
       });
 
       const data = await response.json();
