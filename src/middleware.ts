@@ -5,18 +5,21 @@ export function middleware(request: NextRequest) {
   const authCookie = request.cookies.get('auth');
   const { pathname } = request.nextUrl;
 
-  // If user is not authenticated and trying to access protected routes
-  if (!authCookie && (pathname.startsWith('/landlord') || pathname.startsWith('/tenant'))) {
-    // Redirect to the appropriate login page
-    const loginPath = pathname.startsWith('/landlord') ? '/landlord/login' : '/tenant/login';
-    return NextResponse.redirect(new URL(loginPath, request.url));
+  // Skip auth check for login and register pages
+  if (pathname === '/landlord/login' || pathname === '/tenant/login' || 
+      pathname === '/landlord/register' || pathname === '/tenant/register') {
+    // If user is already authenticated and trying to access login/register pages
+    if (authCookie) {
+      const dashboardPath = pathname.startsWith('/landlord') ? '/landlord/dashboard' : '/tenant/dashboard';
+      return NextResponse.redirect(new URL(dashboardPath, request.url));
+    }
+    return NextResponse.next();
   }
 
-  // If user is authenticated and trying to access login pages
-  if (authCookie && (pathname === '/landlord/login' || pathname === '/tenant/login')) {
-    // Redirect to the appropriate dashboard
-    const dashboardPath = pathname === '/landlord/login' ? '/landlord/dashboard' : '/tenant/dashboard';
-    return NextResponse.redirect(new URL(dashboardPath, request.url));
+  // For all other protected routes, check authentication
+  if (!authCookie && (pathname.startsWith('/landlord') || pathname.startsWith('/tenant'))) {
+    const loginPath = pathname.startsWith('/landlord') ? '/landlord/login' : '/tenant/login';
+    return NextResponse.redirect(new URL(loginPath, request.url));
   }
 
   return NextResponse.next();
@@ -25,8 +28,6 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/landlord/:path*',
-    '/tenant/:path*',
-    '/landlord/login',
-    '/tenant/login'
+    '/tenant/:path*'
   ]
 }; 
