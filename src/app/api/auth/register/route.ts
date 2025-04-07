@@ -41,10 +41,26 @@ export async function POST(req: Request) {
     // Remove password from response
     const { password: _, ...userWithoutPassword } = user.toObject();
 
-    return NextResponse.json(
-      { message: 'Registration successful', user: userWithoutPassword },
+    // Create response
+    const response = NextResponse.json(
+      { 
+        message: 'Registration successful', 
+        user: userWithoutPassword,
+        redirectUrl: role === 'landlord' ? '/landlord/dashboard' : '/tenant/dashboard'
+      },
       { status: 201 }
     );
+
+    // Set the auth cookie
+    response.cookies.set('auth', 'true', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7 // 1 week
+    });
+
+    return response;
   } catch (error) {
     console.error('Registration error:', error);
     return NextResponse.json(

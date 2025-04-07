@@ -68,8 +68,13 @@ export default function TenantRegister() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...formData,
-          role: 'tenant'
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+          phoneNumber: formData.phoneNumber,
+          address: formData.address,
+          role: 'tenant' as const
         }),
       });
 
@@ -79,8 +84,8 @@ export default function TenantRegister() {
         throw new Error(data.error || 'Registration failed');
       }
 
-      // Redirect to login page on success
-      router.push('/tenant/login');
+      // Redirect to the URL provided by the server
+      router.push(data.redirectUrl || '/tenant/dashboard');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed');
     } finally {

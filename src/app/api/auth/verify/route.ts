@@ -20,21 +20,21 @@ export async function GET() {
     await connectDB();
 
     // Get user from session (you'll need to implement proper session handling)
-    // For now, we'll just return a mock response
+    // For now, we'll just return the first tenant user
+    const user = await User.findOne({ role: 'tenant' });
+    
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    // Remove password from response
+    const { password: _, ...userWithoutPassword } = user.toObject();
+
     return NextResponse.json({
-      user: {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        phoneNumber: '123-456-7890',
-        address: {
-          street: '123 Main St',
-          city: 'Anytown',
-          state: 'CA',
-          zipCode: '12345',
-          country: 'USA'
-        }
-      }
+      user: userWithoutPassword
     });
   } catch (error) {
     console.error('Verification error:', error);
