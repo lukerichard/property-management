@@ -8,14 +8,14 @@ export function middleware(request: NextRequest) {
   // If user is not authenticated and trying to access protected routes
   if (!authCookie && (pathname.startsWith('/landlord') || pathname.startsWith('/tenant'))) {
     // Redirect to the appropriate login page
-    const loginPath = pathname.startsWith('/landlord') ? '/login/landlord' : '/login/tenant';
+    const loginPath = pathname.startsWith('/landlord') ? '/landlord/login' : '/tenant/login';
     return NextResponse.redirect(new URL(loginPath, request.url));
   }
 
   // If user is authenticated and trying to access login pages
-  if (authCookie && (pathname === '/login/landlord' || pathname === '/login/tenant')) {
+  if (authCookie && (pathname === '/landlord/login' || pathname === '/tenant/login')) {
     // Redirect to the appropriate dashboard
-    const dashboardPath = pathname === '/login/landlord' ? '/landlord/dashboard' : '/tenant/dashboard';
+    const dashboardPath = pathname === '/landlord/login' ? '/landlord/dashboard' : '/tenant/dashboard';
     return NextResponse.redirect(new URL(dashboardPath, request.url));
   }
 
@@ -26,7 +26,7 @@ export const config = {
   matcher: [
     '/landlord/:path*',
     '/tenant/:path*',
-    '/login/landlord',
-    '/login/tenant'
+    '/landlord/login',
+    '/tenant/login'
   ]
 }; 

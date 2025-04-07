@@ -4,8 +4,7 @@ import bcrypt from 'bcryptjs';
 export interface IUser {
   email: string;
   password: string;
-  name: string;
-  role: 'tenant' | 'landlord' | 'admin';
+  role: 'tenant' | 'landlord';
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -107,22 +106,16 @@ userSchema.pre('save', function(next) {
 // Method to compare password for login
 userSchema.methods.comparePassword = async function(candidatePassword: string): Promise<boolean> {
   try {
-    console.log('Starting password comparison...');
     if (!candidatePassword) {
-      console.log('No candidate password provided');
       return false;
     }
     if (!this.password) {
-      console.log('No stored password found');
       return false;
     }
-    console.log('Comparing passwords using bcrypt...');
-    const result = await bcrypt.compare(candidatePassword, this.password);
-    console.log('Password comparison completed with result:', result);
-    return result;
+    return await bcrypt.compare(candidatePassword, this.password);
   } catch (error) {
     console.error('Error in password comparison:', error);
-    throw error; // Propagate the error for better error handling
+    throw error;
   }
 };
 
